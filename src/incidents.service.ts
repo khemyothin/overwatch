@@ -4,12 +4,14 @@ import { Repository } from 'typeorm';
 import { CreateIncidentDto } from './dto/create-incident.dto';
 import { UpdateIncidentDto } from './dto/update-incident.dto';
 import { Incident } from './entities/incident.entity';
+import { EventsGateway } from './events.gateway';
 
 @Injectable()
 export class IncidentsService {
   constructor(
     @InjectRepository(Incident)
     private readonly incidentRepository: Repository<Incident>,
+    private readonly eventsGateway: EventsGateway,
   ) { }
 
   analyzeThreat(text: string): { type: string; priority: string } {
@@ -41,7 +43,9 @@ export class IncidentsService {
       ...createIncidentDto,
       ...analysis,
     });
-    return await this.incidentRepository.save(incident);
+    const savedIncident = await this.incidentRepository.save(incident);
+    this.eventsGateway.emitNewIncident(savedIncident);
+    return savedIncident;
   }
 
   findAll() {
