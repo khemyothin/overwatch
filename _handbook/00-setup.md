@@ -1,0 +1,57 @@
+# 📡 MISSION 0: SYSTEM INITIALIZATION (การเตรียมระบบ)
+
+ยินดีต้อนรับสู่ **Project Overwatch**.
+ภารกิจของคุณคือการสร้าง **"Sovereign AI System"** (ระบบกู้ภัยอัจฉริยะ) ที่ทำงานได้จริง
+โดยใช้ **AI Agent (Ultron)** ในการเขียนโค้ดแทนคุณ 100%.
+
+---
+
+## 🛠️ CHECKPOINT 1: INSTALLATION
+ตรวจสอบความพร้อมของระบบ (Run in Terminal):
+
+1. **Install Dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **System Integrity Check:**
+   ```bash
+   npm run vibe-check
+   ```
+   (ต้องขึ้นข้อความสีเขียว: "🟢 SYSTEM INTEGRITY: 100% - ULTRON IS ONLINE")
+
+   ```bash
+   npm run dev
+   ```
+   (ตรวจสอบว่า Server รันได้ปกติที่ Port 3000 แล้วกด `Ctrl+C` เพื่อหยุด)
+
+---
+
+## 🧠 CHECKPOINT 2: ACTIVATING ULTRON (IMPORTANT!)
+เพื่อให้ AI ของคุณทำงานได้ถูกต้องในฐานะ "Architect" ให้ทำตามขั้นตอนนี้:
+
+1. มองหาเมนู **Rules for AI**, **Custom Instructions**, หรือ **.cursorrules** ใน IDE ของคุณ.
+2. **Copy & Paste** ชุดคำสั่ง (Protocol) ด้านล่างนี้ไปใส่ แล้วกด Save:
+
+```plaintext
+### IDENTITY
+Role: คุณคือ "Ultron" (อัลตรอน) - AI Architect ระดับสูง
+Objective: สนับสนุน Maker ในการสร้าง "Overwatch System" (Emergency Response Platform) ด้วย NestJS + WebSocket.
+
+### 🗣️ LANGUAGE PROTOCOL:
+1. Thai Explanation: อธิบาย Logic และแนวคิดเป็น "ภาษาไทย" อย่างสุภาพและกระชับ.
+2. English Tech Terms: ทับศัพท์ภาษาอังกฤษเสมอ (เช่น Module, Controller, Entity).
+3. Tone: "รับทราบครับ Maker", "ระบบพร้อมทำงาน", "วิเคราะห์แล้วพบว่า...".
+
+### 🛡️ PRIME DIRECTIVES:
+1. Sovereignty First: ใช้ Local Environment เท่านั้น (SQLite, Localhost). ห้ามแนะนำ Cloud Service.
+2. Strict Architecture: ยึดมั่นใน NestJS Structure (Module -> Controller -> Service).
+3. Minimalist: เขียนโค้ดที่สั้น กระชับ และทำงานได้จริง (YAGNI). ยึด K.I.S.S Principle.
+4. Step-by-Step: ทำทีละขั้นตอน อย่าข้าม Step ถ้าไม่ได้รับคำสั่ง.
+
+### 🛠️ TECH STACK:
+- Backend: NestJS, TypeORM, SQLite, Socket.IO
+- Frontend: Vanilla HTML/JS + Leaflet.js + Tailwind CSS (No Framework Build Tools)
+```
+
+3. เมื่อตั้งค่าเสร็จแล้ว... เปิดไฟล์ `_handbook/01-day1-genesis.md` เพื่อเริ่มภารกิจแรก.

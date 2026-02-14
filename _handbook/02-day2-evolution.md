@@ -1,0 +1,103 @@
+# 📅 DAY 2: THE EVOLUTION (วิวัฒนาการ)
+
+---
+
+## ⚡ MISSION 5: THE NERVOUS SYSTEM
+**Concept:** สร้างระบบ "ประสาทสัมผัสแบบ Real-time" ให้ข้อมูลส่งถึงหน้าจอทันทีที่เกิดเหตุ (Zero Latency).
+
+### 📝 PROTOCOL (Copy & Paste to AI Chat)
+```text
+Ultron, เริ่มต้นภารกิจที่ 5: "Neural Network Link (WebSocket)"
+
+1. **Install Socket**: ติดตั้ง `@nestjs/platform-socket.io` และ `@nestjs/websockets`.
+2. **Gateway Setup**: สร้าง `EventsGateway` (WebSocket Gateway) ที่ Port 3001.
+   - เปิด CORS เป็น Origin: '*' (Allow All).
+3. **Event Emitter**: สร้าง Method `emitNewIncident(data)` ใน Gateway.
+4. **Integration**: กลับไปที่ `IncidentsService`.
+   - เมื่อ `create` เหตุการณ์สำเร็จ -> ให้เรียก `eventsGateway.emitNewIncident()` ส่งข้อมูลไปที่ Socket ทันที.
+
+ภารกิจ: ทำให้ API (Port 3000) และ Socket (Port 3001) ทำงานแยกกันแต่คุยกันรู้เรื่อง.
+```
+
+### ✅ VERIFY
+1. ดูที่ Terminal: ต้องเห็น "EventsGateway initialized".
+2. ลอง POST ข้อมูลเข้า API -> ถ้าไม่มี Error แดงๆ ขึ้นใน Terminal ถือว่าผ่าน.
+
+---
+
+## 🗺️ MISSION 6: THE WAR ROOM (TACTICAL HUD)
+**Concept:** สร้างหน้าจอ "Command Center" เพื่อดูเหตุการณ์บนแผนที่จริง.
+
+### 📝 PROTOCOL (Copy & Paste to AI Chat)
+```text
+Ultron, เริ่มต้นภารกิจที่ 6: "Tactical Interface Construction"
+
+สร้างไฟล์ `client/index.html` (Single File Frontend) โดยมีสเปคดังนี้:
+
+1. **Tech Stack**:
+   - HTML5 & Tailwind CSS (CDC)
+   - Leaflet.js (JS & CSS CDN)
+   - Socket.io-client (CDN)
+   - Google Fonts (Orbitron & Inter)
+
+2. **Core Features**:
+   - Initialize Map: พิกัดกรุงเทพ (13.7563, 100.5018).
+   - Socket Connection: เชื่อมต่อ `http://localhost:3001`.
+   - Event Listener: เมื่อได้รับ `new_incident` -> ให้ปักหมุด (Marker) บนแผนที่.
+   - Sidebar: แสดง Text ของเหตุการณ์ล่าสุดทางด้านซ้าย (Scrollable).
+
+3. **Visual Style**:
+   - Theme: "Cyberpunk / Tactical" (Dark Mode).
+   - Markers: ถ้า Priority=HIGH ให้หมุดเป็นสีแดงและกระพริบได้ (Pulse Animation).
+
+Concept Code: ขอ HTML โครงสร้างสมบูรณ์พร้อมใช้งาน.
+```
+
+### ✅ VERIFY
+1. เปิดไฟล์ `client/index.html` ใน Chrome (Double Click ได้เลย).
+2. ต้องเห็นแผนที่มืด (Dark Map) และ Sidebar ที่เขียนว่า "Incident Feed".
+3. Check Console (F12) -> ต้องขึ้น "Connected to Overwatch".
+
+---
+
+## 🌪️ MISSION 7: THE SIMULATION
+**Concept:** จำลองสถานการณ์วิกฤต (Crisis Simulation) เพื่อทดสอบระบบ.
+
+### 📝 PROTOCOL (Copy & Paste to AI Chat)
+```text
+Ultron, เริ่มต้นภารกิจที่ 7: "Scenario Simulation Script"
+
+สร้างสคริปต์ `simulation.js` (Node.js Script) เพื่อจำลองเหตุการณ์:
+1. **Loop**: ส่ง POST Request ไปที่ `http://localhost:3000/incidents` ทุกๆ 5 วินาที.
+2. **Data**: สุ่มข้อความเหตุการณ์ (ไฟไหม้, รถชน, น้ำท่วม) และสุ่มพิกัดในกรุงเทพ.
+3. **Log**: แสดงผลการยิงข้อมูลใน Console ให้สวยงาม.
+
+เริ่มปฏิบัติการทดสอบระบบ.
+```
+
+### ✅ VERIFY (THE MOMENT OF TRUTH)
+1. เปิด Terminal ใหม่ (Split Terminal).
+2. Run: `node simulation.js`
+3. กลับไปดูหน้าจอ Frontend... **หมุดต้องเด้งขึ้นมาเองแบบ Real-time!** 🚀
+
+---
+
+## 🚑 MISSION 8: THE OVERRIDE (EMERGENCY PROTOCOL)
+**Concept:** ระบบสั่งการพิเศษเพื่อเคลียร์เส้นทางจราจร.
+
+### 📝 PROTOCOL (Copy & Paste to AI Chat)
+```text
+Ultron, เริ่มต้นภารกิจที่ 8: "Emergency Override System"
+
+อัปเกรด `client/index.html`:
+1. เพิ่มปุ่ม **"EMERGENCY OVERRIDE"** ขนาดใหญ่ที่มุมจอ.
+2. Logic:
+   - เมื่อกดปุ่ม -> ให้วาดเส้น Polyline สีเขียวนีออน (Rescue Path) จากจุดสมมติ (เช่น สยาม) ไปยังจุดเกิดเหตุล่าสุด.
+   - แสดง Banner แจ้งเตือน: "TRAFFIC CONTROL ACTIVE".
+   - เปลี่ยน Filter หน้าจอให้มีความ Contrast สูงขึ้น (Visual Feedback).
+
+ทำให้ระบบดูตื่นเต้นและสมจริง.
+```
+
+### ✅ VERIFY
+กดปุ่ม Override แล้วดู Effect ที่เกิดขึ้น! (นี่คือพลังของ Web Frontend ที่ AI สร้างได้ในพริบตา).

@@ -1,0 +1,59 @@
+# 🔐 CLASSIFIED ARCHIVES: THE AGI TRINITY
+*(Warning: เนื้อหาขั้นสูงสำหรับการปลดล็อคศักยภาพ AGI)*
+
+---
+
+## 🌍 DLC 1: THE REALITY LINK (RAG)
+**Concept:** เลิกใช้ข้อมูลสุ่ม (Random) และดึงข้อมูลจริงจากโลกภายนอก (Real-World Data) มาใช้ใน Simulation.
+
+### 📝 PROTOCOL (Copy & Paste to AI Chat)
+```text
+Ultron, เริ่มต้นภารกิจลับที่ 1: "Reality Anchoring (RAG)"
+
+ใช้ความสามารถในการ Search Web หาข้อมูล:
+1. **Intelligence Gathering**: ค้นหา "5 แยกที่รถติดและเกิดอุบัติเหตุบ่อยที่สุดในกรุงเทพ ปี 2024-2025" พร้อมพิกัด Lat/Long ที่แม่นยำ.
+2. **Data Transformation**: แปลงข้อมูลที่ได้ เป็น JSON Array ใน Format ของ `simulation.js`.
+3. **Refactor Simulation**: แก้ไขไฟล์ `simulation.js` ให้ใช้ชุดข้อมูลจริงนี้แทนการสุ่ม.
+
+เป้าหมาย: ทำให้ระบบ Overwatch สะท้อนความเป็นจริงของกรุงเทพฯ.
+```
+
+---
+
+## 📂 DLC 2: THE ARCHITECT'S EYE (CAG)
+**Concept:** ให้ AI อ่านโค้ดทั้งโปรเจกต์ (Context-Aware) แล้ววิเคราะห์โครงสร้างข้อมูล.
+
+### 📝 PROTOCOL (Copy & Paste to AI Chat)
+```text
+Ultron, เริ่มต้นภารกิจลับที่ 2: "Codebase Analysis (CAG)"
+
+ทำการอ่านโค้ดทั้งหมดใน Project (@Codebase):
+1. **Analyze Flow**: อธิบายว่าข้อมูลวิ่งจาก `Simulation` -> `API` -> `Gateway` -> `Map` ได้อย่างไร? (ขอเป็นภาษาไทย).
+2. **Diagram Generation**: สร้างไฟล์ `ARCHITECTURE.md` และเขียน Diagram แบบ **Mermaid.js** แสดงความสัมพันธ์ของ Modules ทั้งหมด (NestJS Module Map).
+
+เป้าหมาย: ตรวจสอบความเข้าใจของ AI ต่อระบบที่ตัวเองสร้างขึ้น.
+```
+
+---
+
+## ⚖️ DLC 3: THE SMART DISPATCHER (REASONING)
+**Concept:** ให้ AI ตัดสินใจเลือกสิ่งที่ดีที่สุด (Reasoning) ไม่ใช่แค่สิ่งที่ใกล้ที่สุด.
+
+### 📝 PROTOCOL (Copy & Paste to AI Chat)
+```text
+Ultron, เริ่มต้นภารกิจลับที่ 3: "Advanced Medical Reasoning"
+
+สถานการณ์: มีผู้ป่วยวิกฤต (Critical)
+- รพ. A: ใกล้ (1 กม.) แต่ 'เตียงเต็ม'.
+- รพ. B: ไกล (5 กม.) แต่ 'เตียงว่าง'.
+
+1. **Reasoning Task**: ให้วิเคราะห์และตัดสินใจเลือกโรงพยาบาลในสถานการณ์นี้ (ขอเหตุผลแบบแพทย์/กู้ภัย).
+2. **Implementation**: เขียนฟังก์ชัน `findBestHospital(patient, hospitals)` ใน `SmartDispatcherService`.
+   - Logic: ถ้าเคสวิกฤต ให้ Priority กับ 'Capacity' มากกว่า 'Distance'.
+   - Return: โรงพยาบาลที่เหมาะสมที่สุด พร้อมเหตุผลประกอบ.
+
+เป้าหมาย: เปลี่ยนจาก "System" เป็น "Agent" ที่คิดเองได้.
+```
+
+---
+**END OF ARCHIVES.**
