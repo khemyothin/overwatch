@@ -19,24 +19,29 @@
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <style>
         :root {
-            --neon-cyan: #00f2ff;
-            --neon-red: #ff003c;
-            --neon-green: #39ff14;
-            --bg-dark: #050507;
-            --panel-bg: rgba(13, 13, 15, 0.9);
+            --accent-blue: #2563eb;
+            --accent-red: #dc2626;
+            --accent-green: #16a34a;
+            --bg-main: #f1f5f9;
+            --panel-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-ui: #cbd5e1;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: #d1d1d6;
+            background-color: var(--bg-main);
+            color: var(--text-main);
             margin: 0;
             overflow: hidden;
         }
 
         .font-tech {
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 0.15em;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
         }
 
         .font-mono {
@@ -49,42 +54,7 @@
             background: #000;
         }
 
-        /* --- CRT & Scanline VFX --- */
-        .crt-overlay::after {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
-            z-index: 1000;
-            background-size: 100% 3px, 3px 100%;
-            pointer-events: none;
-        }
-
-        .scanline {
-            width: 100%;
-            height: 100px;
-            z-index: 1001;
-            background: linear-gradient(0deg, rgba(0, 242, 255, 0) 0%, rgba(0, 242, 255, 0.03) 50%, rgba(0, 242, 255, 0) 100%);
-            opacity: 0.1;
-            position: absolute;
-            bottom: 100%;
-            animation: scanline 8s linear infinite;
-            pointer-events: none;
-        }
-
-        @keyframes scanline {
-            0% {
-                bottom: 100%;
-            }
-
-            100% {
-                bottom: -100px;
-            }
-        }
+        /* --- Removed CRT VFX --- */
 
         /* --- Custom Markers --- */
         .leaflet-div-icon {
@@ -107,48 +77,48 @@
         }
 
         .pulse-marker-inner {
-            width: 22px;
-            height: 22px;
-            background: var(--neon-red);
+            width: 24px;
+            height: 24px;
+            background: var(--accent-red);
             border-radius: 50%;
-            border: 2px solid #fff;
-            animation: pulse-red 0.8s infinite cubic-bezier(0.66, 0, 0, 1);
-            box-shadow: 0 0 15px var(--neon-red), 0 0 30px var(--neon-red);
+            border: 3px solid #fff;
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
+            animation: jump 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-sizing: border-box;
         }
 
         .standard-marker-inner {
-            width: 14px;
-            height: 14px;
-            background: var(--neon-cyan);
+            width: 16px;
+            height: 16px;
+            background: var(--accent-blue);
             border-radius: 50%;
             border: 2px solid #fff;
-            box-shadow: 0 0 10px var(--neon-cyan);
+            box-shadow: 0 2px 6px rgba(0, 102, 255, 0.3);
             box-sizing: border-box;
         }
 
         .hq-marker {
-            width: 18px;
-            height: 18px;
-            background: var(--neon-green);
-            box-shadow: 0 0 20px var(--neon-green);
-            border: 3px solid #000;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-green);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+            border: 3px solid #fff;
+            border-radius: 4px;
         }
 
-        @keyframes pulse-red {
+        @keyframes jump {
             0% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(255, 0, 60, 0.8);
+                transform: scale(0);
+                opacity: 0;
             }
 
-            70% {
-                transform: scale(1.3);
-                box-shadow: 0 0 0 15px rgba(255, 0, 60, 0);
+            50% {
+                transform: scale(1.2);
             }
 
             100% {
                 transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(255, 0, 60, 0);
+                opacity: 1;
             }
         }
 
@@ -156,27 +126,28 @@
         .sidebar {
             width: 380px;
             background: var(--panel-bg);
-            border-right: 1px solid #222;
-            backdrop-filter: blur(10px);
+            border-right: 1px solid var(--border-ui);
+            backdrop-filter: blur(16px);
             z-index: 2000;
             display: flex;
             flex-direction: column;
+            color: var(--text-main);
         }
 
         .cyber-panel {
-            background: rgba(20, 20, 25, 0.8);
-            border: 1px solid #333;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            background: #ffffff;
+            border: 1px solid var(--border-ui);
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
 
         .neon-text-cyan {
-            color: var(--neon-cyan);
-            text-shadow: 0 0 5px var(--neon-cyan);
+            color: var(--accent-blue);
         }
 
         .neon-text-red {
-            color: var(--neon-red);
-            text-shadow: 0 0 5px var(--neon-red);
+            color: var(--accent-red);
+            font-weight: 700;
         }
 
         /* --- Emergency Override --- */
@@ -297,11 +268,6 @@
             }
         }
 
-        .emergency-filter {
-            filter: contrast(180%) brightness(140%) saturate(200%) hue-rotate(-15deg) !important;
-            transition: filter 0.5s ease;
-        }
-
         /* --- Scrollbar --- */
         ::-webkit-scrollbar {
             width: 4px;
@@ -321,29 +287,29 @@
     </style>
 </head>
 
-<body class="h-screen flex crt-overlay">
-    <div class="scanline"></div>
+<body class="h-screen flex">
+    <!-- Removed Scanlines -->
 
     <!-- Sidebar Control Panel -->
-    <aside class="sidebar border-r border-gray-800">
-        <div class="p-8 border-b border-gray-800">
+    <aside class="sidebar h-full">
+        <div class="p-8 border-b border-slate-200">
             <div class="flex justify-between items-start mb-4">
-                <h1 class="text-3xl font-bold font-tech neon-text-cyan flex flex-col">
+                <h1 class="text-3xl font-bold font-tech text-slate-800 flex flex-col">
                     <span>OVERWATCH</span>
-                    <span class="text-[10px] tracking-[0.6em] text-gray-500 -mt-1">COMMAND SYSTEM</span>
+                    <span class="text-[10px] tracking-[0.6em] text-slate-400 -mt-1">COMMAND SYSTEM</span>
                 </h1>
-                <div class="px-2 py-1 border border-cyan-500/30 bg-cyan-950/20 text-[8px] font-mono text-cyan-400">
-                    v2.0.42_A</div>
+                <div class="px-2 py-1 border border-blue-200 bg-blue-50 text-[8px] font-mono text-blue-600 rounded">
+                    v3.0.0_STABLE</div>
             </div>
 
             <div class="grid grid-cols-2 gap-2 mt-6">
                 <div class="p-2 cyber-panel">
-                    <div class="text-[8px] text-gray-500 font-tech">SATLINK STATUS</div>
-                    <div id="status-text" class="text-[10px] text-green-400 font-tech uppercase">Syncing...</div>
+                    <div class="text-[8px] text-slate-400 font-tech">SATLINK STATUS</div>
+                    <div id="status-text" class="text-[10px] text-green-600 font-tech uppercase">Active</div>
                 </div>
                 <div class="p-2 cyber-panel">
-                    <div class="text-[8px] text-gray-500 font-tech">LATENCY</div>
-                    <div id="latency-text" class="text-[10px] text-cyan-400 font-mono">14ms</div>
+                    <div class="text-[8px] text-slate-400 font-tech">LATENCY</div>
+                    <div id="latency-text" class="text-[10px] text-blue-600 font-mono">12ms</div>
                 </div>
             </div>
         </div>
@@ -363,10 +329,10 @@
         </div>
 
         <!-- Footer Info -->
-        <div class="p-6 bg-black border-t border-gray-800">
-            <div class="flex justify-between text-[9px] font-tech text-gray-600">
-                <span>COORD: <span id="mouse-coords">0.000, 0.000</span></span>
-                <span id="sys-clock">00:00:00</span>
+        <div class="p-6 bg-slate-50 border-t border-slate-200">
+            <div class="flex justify-between text-[9px] font-tech text-slate-400">
+                <span>COORD: <span id="mouse-coords" class="text-slate-600 font-mono">0.000, 0.000</span></span>
+                <span id="sys-clock" class="text-slate-600">00:00:00</span>
             </div>
         </div>
     </aside>
@@ -388,20 +354,20 @@
 
         <!-- Right Side HUD (System Info) -->
         <div class="absolute top-6 right-6 z-[2000] w-64 space-y-4 pointer-events-none">
-            <div class="p-4 cyber-panel backdrop-blur-md border-cyan-500/20">
-                <div class="text-[8px] text-gray-500 font-tech mb-2">SYSTEM SCANNER</div>
+            <div class="p-4 cyber-panel backdrop-blur-md border-slate-200">
+                <div class="text-[8px] text-slate-400 font-tech mb-2">SYSTEM SCANNER</div>
                 <div class="space-y-2">
                     <div class="flex justify-between text-[10px]">
-                        <span class="text-gray-500">THREATS:</span>
-                        <span id="threat-count" class="text-cyan-400 font-mono">00</span>
+                        <span class="text-slate-500">THREATS:</span>
+                        <span id="threat-count" class="text-blue-600 font-mono font-bold">00</span>
                     </div>
                     <div class="flex justify-between text-[10px]">
-                        <span class="text-gray-500">CPU LOAD:</span>
-                        <span class="text-green-500 font-mono">12.4%</span>
+                        <span class="text-slate-500">CPU LOAD:</span>
+                        <span class="text-green-600 font-mono font-bold">12.4%</span>
                     </div>
                     <div id="override-status-hud" class="hidden flex justify-between text-[10px] animate-pulse">
-                        <span class="text-red-500">OVERRIDE:</span>
-                        <span class="text-red-500 font-tech">ACTIVE</span>
+                        <span class="text-red-600 font-bold">OVERRIDE:</span>
+                        <span class="text-red-600 font-tech">ACTIVE</span>
                     </div>
                 </div>
             </div>
@@ -424,8 +390,9 @@
         // INIT MAP
         const map = L.map('map', { zoomControl: false, attributionControl: false }).setView([13.7563, 100.5018], 13);
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            maxZoom: 19
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19,
+            attribution: '©OpenStreetMap, ©CartoDB'
         }).addTo(map);
 
         // UI Handlers
@@ -498,12 +465,12 @@
             const m = L.marker([lat, lng], { icon }).addTo(map);
             m.bindPopup(`
                 <div class="p-2 font-mono text-[10px]">
-                    <div class="flex justify-between border-b border-gray-800 pb-1 mb-1">
-                        <span class="${isHigh ? 'text-red-500' : 'text-cyan-400'}">ID: ${inc.id.slice(0, 8)}</span>
-                        <span class="text-gray-500">${inc.priority}</span>
+                    <div class="flex justify-between border-b border-slate-200 pb-1 mb-1">
+                        <span class="${isHigh ? 'text-red-600' : 'text-blue-600'}">ID: ${inc.id.slice(0, 8)}</span>
+                        <span class="text-slate-400">${inc.priority}</span>
                     </div>
-                    <div class="text-white mt-1 uppercase">${inc.type}: ${inc.text}</div>
-                    <div class="text-gray-600 mt-2 text-[8px]">GPS: ${inc.latitude.toFixed(4)}, ${inc.longitude.toFixed(4)}</div>
+                    <div class="text-slate-800 mt-1 uppercase font-bold">${inc.type}: ${inc.text}</div>
+                    <div class="text-slate-500 mt-2 text-[8px]">GPS: ${inc.latitude.toFixed(4)}, ${inc.longitude.toFixed(4)}</div>
                 </div>
             `, { closeButton: false });
         }
@@ -513,18 +480,18 @@
 
             const isHigh = inc.priority === 'HIGH';
             const log = document.createElement('div');
-            log.className = `p-4 cyber-panel border-l-4 transition-all hover:bg-white/5 cursor-pointer ${isHigh ? 'border-red-600 bg-red-950/10' : 'border-cyan-600'}`;
+            log.className = `p-4 cyber-panel border-l-4 transition-all hover:bg-slate-50 cursor-pointer ${isHigh ? 'border-red-500 bg-red-50' : 'border-blue-500'}`;
             log.onclick = () => map.flyTo([inc.latitude, inc.longitude], 15);
 
             log.innerHTML = `
                 <div class="flex justify-between items-center mb-2">
-                    <span class="text-[9px] font-tech ${isHigh ? 'neon-text-red' : 'neon-text-cyan'}">${inc.type}</span>
-                    <span class="text-[8px] font-mono text-gray-500">${new Date().toLocaleTimeString()}</span>
+                    <span class="text-[9px] font-tech ${isHigh ? 'text-red-700' : 'text-blue-700'}">${inc.type}</span>
+                    <span class="text-[8px] font-mono text-slate-400">${new Date().toLocaleTimeString()}</span>
                 </div>
-                <div class="text-xs text-gray-300 leading-tight">${inc.text}</div>
-                <div class="mt-2 text-[8px] font-mono text-gray-600 flex justify-between">
-                    <span>SECTOR: BKK-G12</span>
-                    <span>THREAT LEVEL: ${isHigh ? 'CRITICAL' : 'MINIMAL'}</span>
+                <div class="text-xs text-slate-800 font-semibold leading-tight">${inc.text}</div>
+                <div class="mt-2 text-[8px] font-mono text-slate-500 flex justify-between">
+                    <span>SECTOR: BKK-CORE</span>
+                    <span>THREAT: ${isHigh ? 'CRITICAL' : 'MONITORED'}</span>
                 </div>
             `;
             stream.prepend(log);
@@ -542,47 +509,76 @@
                 btn.classList.add('active');
                 banner.style.display = 'block';
                 hud.classList.remove('hidden');
-                document.body.classList.add('emergency-filter');
+
                 drawRescuePath();
                 console.warn("PROTOCOL OVERRIDE: TRAFFIC CONTROL ACTIVE");
             } else {
                 btn.classList.remove('active');
                 banner.style.display = 'none';
                 hud.classList.add('hidden');
-                document.body.classList.remove('emergency-filter');
+
                 if (rescuePath) map.removeLayer(rescuePath);
                 rescuePath = null;
             }
         }
 
-        function drawRescuePath() {
-            if (!latestIncident) return;
-            if (rescuePath) map.removeLayer(rescuePath);
+        async function drawRescuePath() {
+            if (!latestIncident || latestIncident.priority !== 'HIGH') return;
 
-            const points = [HQ_COORDS, [latestIncident.latitude, latestIncident.longitude]];
+            // UI Feedback: Scanning...
+            const banner = document.getElementById('alert-banner');
+            const originalText = banner.textContent;
+            banner.textContent = "CALCULATING TACTICAL ROUTE...";
+            banner.style.background = "#ff003c";
 
-            rescuePath = L.polyline(points, {
-                color: '#39ff14',
-                weight: 6,
-                opacity: 0.8,
-                lineCap: 'round',
-                className: 'neon-path-line'
-            }).addTo(map);
+            try {
+                const start = `${HQ_COORDS[1]},${HQ_COORDS[0]}`; // lng,lat
+                const end = `${latestIncident.longitude},${latestIncident.latitude}`; // lng,lat
+                const url = `https://router.project-osrm.org/route/v1/driving/${start};${end}?overview=full&geometries=geojson`;
 
-            // Add CSS animation filter to path
-            setTimeout(() => {
-                const pathEl = rescuePath.getElement();
-                if (pathEl) {
-                    pathEl.style.filter = 'drop-shadow(0 0 10px #39ff14)';
-                    pathEl.style.strokeDasharray = '10, 15';
-                    pathEl.animate([
-                        { strokeDashoffset: '100' },
-                        { strokeDashoffset: '0' }
-                    ], { duration: 1000, iterations: Infinity });
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.routes && data.routes.length > 0) {
+                    const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]); // [lat, lng]
+
+                    if (rescuePath) map.removeLayer(rescuePath);
+
+                    rescuePath = L.polyline(coords, {
+                        color: '#39ff14',
+                        weight: 6,
+                        opacity: 0.8,
+                        lineCap: 'round',
+                        lineJoin: 'round',
+                        className: 'neon-path-line'
+                    }).addTo(map);
+
+                    // Re-apply animation
+                    setTimeout(() => {
+                        const pathEl = rescuePath.getElement();
+                        if (pathEl) {
+                            pathEl.style.filter = 'drop-shadow(0 0 10px #39ff14)';
+                            pathEl.style.strokeDasharray = '10, 15';
+                            pathEl.animate([
+                                { strokeDashoffset: '100' },
+                                { strokeDashoffset: '0' }
+                            ], { duration: 1000, iterations: Infinity });
+                        }
+                    }, 100);
+
+                    if (coords.length > 0) {
+                        map.fitBounds(rescuePath.getBounds(), { padding: [100, 100], duration: 1.5 });
+                    }
                 }
-            }, 100);
-
-            map.fitBounds(rescuePath.getBounds(), { padding: [100, 100], duration: 1.5 });
+            } catch (error) {
+                console.error("Routing error:", error);
+                // Fallback to straight line
+                const points = [HQ_COORDS, [latestIncident.latitude, latestIncident.longitude]];
+                if (rescuePath) map.removeLayer(rescuePath);
+                rescuePath = L.polyline(points, { color: '#ff003c', weight: 4, dashArray: '5, 10' }).addTo(map);
+            } finally {
+                banner.textContent = originalText;
+            }
         }
     </script>
 </body>
