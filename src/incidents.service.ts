@@ -5,7 +5,6 @@ import { CreateIncidentDto } from './dto/create-incident.dto';
 import { UpdateIncidentDto } from './dto/update-incident.dto';
 import { Incident } from './entities/incident.entity';
 import { EventsGateway } from './events.gateway';
-
 @Injectable()
 export class IncidentsService {
   constructor(
@@ -45,6 +44,17 @@ export class IncidentsService {
     });
     const savedIncident = await this.incidentRepository.save(incident);
     this.eventsGateway.emitNewIncident(savedIncident);
+
+    // [Mission 9: The Transmitter] - Fire and Forget Webhook for HIGH priority
+    if (savedIncident.priority === 'HIGH') {
+      console.log(`[Ultron] High priority incident detected! Transmitting to Agent Hub...`);
+      fetch('http://localhost:4000/dispatch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...savedIncident, timestamp: new Date() }),
+      }).catch(err => console.error(`[Ultron] Transmission failed:`, err.message));
+    }
+
     return savedIncident;
   }
 

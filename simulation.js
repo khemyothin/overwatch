@@ -64,8 +64,8 @@ const hotspots = [
     }
 ];
 
-function getJitter(val, amount = 0.0005) {
-    return val + (Math.random() - 0.5) * amount;
+function getJitter(val, amount = 0) {
+    return val;
 }
 
 async function triggerSimulation() {

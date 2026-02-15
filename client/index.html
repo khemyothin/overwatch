@@ -19,14 +19,14 @@
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <style>
         :root {
-            --accent-blue: #2563eb;
-            --accent-red: #dc2626;
-            --accent-green: #16a34a;
-            --bg-main: #f1f5f9;
-            --panel-bg: rgba(255, 255, 255, 0.9);
-            --text-main: #0f172a;
-            --text-muted: #475569;
-            --border-ui: #cbd5e1;
+            --accent-blue: #3b82f6;
+            --accent-red: #ef4444;
+            --accent-green: #10b981;
+            --bg-main: #0f172a;
+            --panel-bg: rgba(30, 41, 59, 0.8);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-ui: #334155;
         }
 
         body {
@@ -122,12 +122,34 @@
             }
         }
 
+        /* --- Damage Zone Animation --- */
+        @keyframes pulse-red {
+            0% {
+                fill-opacity: 0.3;
+                stroke-opacity: 0.8;
+            }
+
+            50% {
+                fill-opacity: 0.1;
+                stroke-opacity: 0.4;
+            }
+
+            100% {
+                fill-opacity: 0.3;
+                stroke-opacity: 0.8;
+            }
+        }
+
+        .damage-zone-circle {
+            animation: pulse-red 1s infinite ease-in-out;
+        }
+
         /* --- Dashboard Elements --- */
         .sidebar {
             width: 380px;
             background: var(--panel-bg);
             border-right: 1px solid var(--border-ui);
-            backdrop-filter: blur(16px);
+            backdrop-filter: blur(12px);
             z-index: 2000;
             display: flex;
             flex-direction: column;
@@ -135,10 +157,10 @@
         }
 
         .cyber-panel {
-            background: #ffffff;
+            background: rgba(30, 41, 59, 0.5);
             border: 1px solid var(--border-ui);
-            border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         .neon-text-cyan {
@@ -268,6 +290,63 @@
             }
         }
 
+        /* --- DEFCON 1 Mode --- */
+        @keyframes blink-red {
+            0% {
+                background-color: #0f172a;
+            }
+
+            50% {
+                background-color: #450a0a;
+            }
+
+            100% {
+                background-color: #0f172a;
+            }
+        }
+
+        body.mode-defcon-1 {
+            animation: blink-red 2s infinite ease-in-out;
+        }
+
+        body.mode-defcon-1 .cyber-panel {
+            background: rgba(69, 10, 10, 0.4);
+            border-color: #991b1b;
+        }
+
+        body.mode-defcon-1 .sidebar,
+        body.mode-defcon-1 #override-btn,
+        body.mode-defcon-1 .absolute.top-6.right-6 {
+            opacity: 0.5;
+            transition: opacity 0.5s;
+        }
+
+        body.mode-defcon-1 #latency-text,
+        body.mode-defcon-1 .flex.justify-between.text-\[10px\]:last-child {
+            display: none;
+        }
+
+        body.mode-defcon-1 #alert-banner {
+            display: block !important;
+            background: #991b1b;
+            box-shadow: 0 0 50px #ef4444;
+            animation: banner-shake 0.1s infinite;
+        }
+
+        @keyframes banner-shake {
+            0% {
+                transform: translateX(-50%) translate(1px, 1px);
+            }
+
+            50% {
+                transform: translateX(-50%) translate(-1px, -1px);
+            }
+
+            100% {
+                transform: translateX(-50%) translate(1px, 1px);
+            }
+        }
+
         /* --- Scrollbar --- */
         ::-webkit-scrollbar {
             width: 4px;
@@ -291,24 +370,24 @@
     <!-- Removed Scanlines -->
 
     <!-- Sidebar Control Panel -->
-    <aside class="sidebar h-full">
-        <div class="p-8 border-b border-slate-200">
+    <aside class="sidebar h-full text-slate-200">
+        <div class="p-8 border-b border-slate-700">
             <div class="flex justify-between items-start mb-4">
-                <h1 class="text-3xl font-bold font-tech text-slate-800 flex flex-col">
+                <h1 class="text-3xl font-bold font-tech text-slate-100 flex flex-col">
                     <span>OVERWATCH</span>
-                    <span class="text-[10px] tracking-[0.6em] text-slate-400 -mt-1">COMMAND SYSTEM</span>
+                    <span class="text-[10px] tracking-[0.6em] text-slate-400 -mt-1">ระบบสั่งการส่วนกลาง</span>
                 </h1>
-                <div class="px-2 py-1 border border-blue-200 bg-blue-50 text-[8px] font-mono text-blue-600 rounded">
+                <div class="px-2 py-1 border border-slate-700 bg-slate-800 text-[8px] font-mono text-slate-400 rounded">
                     v3.0.0_STABLE</div>
             </div>
 
             <div class="grid grid-cols-2 gap-2 mt-6">
                 <div class="p-2 cyber-panel">
-                    <div class="text-[8px] text-slate-400 font-tech">SATLINK STATUS</div>
-                    <div id="status-text" class="text-[10px] text-green-600 font-tech uppercase">Active</div>
+                    <div class="text-[8px] text-slate-400 font-tech">สถานะการเชื่อมต่อ</div>
+                    <div id="status-text" class="text-[10px] text-green-400 font-tech uppercase">เชื่อมต่อเสถียร</div>
                 </div>
                 <div class="p-2 cyber-panel">
-                    <div class="text-[8px] text-slate-400 font-tech">LATENCY</div>
+                    <div class="text-[8px] text-slate-400 font-tech">ความหน่วงเครือข่าย</div>
                     <div id="latency-text" class="text-[10px] text-blue-600 font-mono">12ms</div>
                 </div>
             </div>
@@ -316,23 +395,23 @@
 
         <!-- Incident Stream -->
         <div class="flex-1 overflow-y-auto p-6 space-y-4" id="stream-container">
-            <div class="flex items-center space-x-2 text-[10px] font-tech text-gray-600 mb-2">
-                <div class="w-1.5 h-1.5 bg-gray-700 animate-pulse"></div>
-                <span>REAL-TIME TELEMETRY FEED</span>
+            <div class="flex items-center space-x-2 text-[10px] font-tech text-gray-400 mb-2">
+                <div class="w-1.5 h-1.5 bg-red-500 animate-pulse"></div>
+                <span>ฟีดข้อมูลเหตุการณ์แบบเรียลไทม์</span>
             </div>
             <!-- Logs will appear here -->
             <div id="initial-load" class="text-[10px] font-mono text-gray-500 animate-pulse">
-                INITIALIZING NEURAL LINK...<br>
-                ESTABLISHING SECURE HANDSHAKE...<br>
-                SCANNING LOCAL GRID...
+                กำลังเริ่มต้นระบบ...<br>
+                กำลังสร้างการเชื่อมต่อที่ปลอดภัย...<br>
+                กำลังสแกนพื้นที่โดยรอบ...
             </div>
         </div>
 
         <!-- Footer Info -->
-        <div class="p-6 bg-slate-50 border-t border-slate-200">
+        <div class="p-6 bg-slate-900/50 border-t border-slate-700">
             <div class="flex justify-between text-[9px] font-tech text-slate-400">
-                <span>COORD: <span id="mouse-coords" class="text-slate-600 font-mono">0.000, 0.000</span></span>
-                <span id="sys-clock" class="text-slate-600">00:00:00</span>
+                <span>พิกัด: <span id="mouse-coords" class="text-slate-300 font-mono">0.000, 0.000</span></span>
+                <span id="sys-clock" class="text-slate-300">00:00:00</span>
             </div>
         </div>
     </aside>
@@ -342,11 +421,11 @@
         <div id="map"></div>
 
         <!-- EMERGENCY UI -->
-        <div id="alert-banner" class="font-tech">TRAFFIC CONTROL ACTIVE</div>
+        <div id="alert-banner" class="font-tech">ประกาศสถานะฉุกเฉิน</div>
 
         <button id="override-btn" class="emergency-btn font-tech" onclick="toggleEmergency()">
-            <span class="text-[8px]">Protocol</span>
-            <span class="text-lg leading-tight mt-1">Override</span>
+            <span class="text-[8px]">โปรโตคอล</span>
+            <span class="text-lg leading-tight mt-1">คุมสถานการณ์</span>
             <div class="mt-2 w-8 h-1 bg-white/30 rounded-full overflow-hidden">
                 <div class="h-full bg-white transition-all duration-300" style="width: 100%"></div>
             </div>
@@ -354,16 +433,16 @@
 
         <!-- Right Side HUD (System Info) -->
         <div class="absolute top-6 right-6 z-[2000] w-64 space-y-4 pointer-events-none">
-            <div class="p-4 cyber-panel backdrop-blur-md border-slate-200">
-                <div class="text-[8px] text-slate-400 font-tech mb-2">SYSTEM SCANNER</div>
+            <div class="p-4 cyber-panel backdrop-blur-md border-slate-700">
+                <div class="text-[8px] text-slate-400 font-tech mb-2">สถานะการปฏิบัติงาน</div>
                 <div class="space-y-2">
                     <div class="flex justify-between text-[10px]">
-                        <span class="text-slate-500">THREATS:</span>
-                        <span id="threat-count" class="text-blue-600 font-mono font-bold">00</span>
+                        <span class="text-slate-400">ภัยคุกคามปัจจุบัน:</span>
+                        <span id="threat-count" class="text-red-500 font-mono font-bold">00</span>
                     </div>
                     <div class="flex justify-between text-[10px]">
-                        <span class="text-slate-500">CPU LOAD:</span>
-                        <span class="text-green-600 font-mono font-bold">12.4%</span>
+                        <span class="text-slate-400">ภาระโครงข่าย:</span>
+                        <span class="text-emerald-500 font-mono font-bold">12.4%</span>
                     </div>
                     <div id="override-status-hud" class="hidden flex justify-between text-[10px] animate-pulse">
                         <span class="text-red-600 font-bold">OVERRIDE:</span>
@@ -386,13 +465,21 @@
         let isEmergency = false;
         let rescuePath = null;
         let hqMarker = null;
+        let activeEmergencies = 0;
 
         // INIT MAP
         const map = L.map('map', { zoomControl: false, attributionControl: false }).setView([13.7563, 100.5018], 13);
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             maxZoom: 19,
-            attribution: '©OpenStreetMap, ©CartoDB'
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EBP, and the GIS User Community'
+        }).addTo(map);
+
+        L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-hybrid/{z}/{x}/{y}{r}.png', {
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            subdomains: 'abcd',
+            minZoom: 0,
+            maxZoom: 20
         }).addTo(map);
 
         // UI Handlers
@@ -422,13 +509,13 @@
         const socket = io(SOCKET_URL);
 
         socket.on('connect', () => {
-            document.getElementById('status-text').textContent = 'LINK STABLE';
+            document.getElementById('status-text').textContent = 'เชื่อมต่อเสถียร';
             document.getElementById('status-text').className = 'text-[10px] text-green-400 font-tech uppercase';
             console.log("Satlink established.");
         });
 
         socket.on('disconnect', () => {
-            document.getElementById('status-text').textContent = 'SIGNAL LOST';
+            document.getElementById('status-text').textContent = 'สัญญาณขาดหาย';
             document.getElementById('status-text').className = 'text-[10px] text-red-500 font-tech uppercase';
         });
 
@@ -436,6 +523,14 @@
             incidents.push(data);
             latestIncident = data;
             threatCount.textContent = incidents.length.toString().padStart(2, '0');
+
+            if (data.priority === 'HIGH') {
+                activeEmergencies++;
+                if (activeEmergencies >= 3) {
+                    document.body.classList.add('mode-defcon-1');
+                    document.getElementById('alert-banner').textContent = "ระดับวิกฤตสูงสุด: DEFCON 1";
+                }
+            }
 
             addMarkerToMap(data);
             addLogToStream(data);
@@ -448,11 +543,8 @@
         function addMarkerToMap(inc) {
             const isHigh = inc.priority === 'HIGH';
 
-            // Jitter logic: add small offset to prevent stacking
-            const jitterLat = (Math.random() - 0.5) * 0.001;
-            const jitterLng = (Math.random() - 0.5) * 0.001;
-            const lat = inc.latitude + jitterLat;
-            const lng = inc.longitude + jitterLng;
+            const lat = inc.latitude;
+            const lng = inc.longitude;
 
             const iconSize = isHigh ? [22, 22] : [14, 14];
             const icon = L.divIcon({
@@ -463,14 +555,41 @@
             });
 
             const m = L.marker([lat, lng], { icon }).addTo(map);
+
+            // Geospatial Damage Visualization for HIGH priority
+            if (isHigh) {
+                const circle = L.circle([lat, lng], {
+                    radius: 500,
+                    color: 'red',
+                    weight: 2,
+                    fillColor: '#f03',
+                    fillOpacity: 0.3,
+                    className: 'damage-zone-circle'
+                }).addTo(map);
+
+                // Pulse effect via CSS class (if needed) or simple timer to remove
+                setTimeout(() => {
+                    map.removeLayer(circle);
+                    if (isHigh) {
+                        activeEmergencies = Math.max(0, activeEmergencies - 1);
+                        if (activeEmergencies < 3) {
+                            document.body.classList.remove('mode-defcon-1');
+                            document.getElementById('alert-banner').textContent = "ประกาศสถานะฉุกเฉิน";
+                            if (!isEmergency) document.getElementById('alert-banner').style.display = 'none';
+                        }
+                    }
+                }, 10000);
+            }
+
             m.bindPopup(`
                 <div class="p-2 font-mono text-[10px]">
-                    <div class="flex justify-between border-b border-slate-200 pb-1 mb-1">
-                        <span class="${isHigh ? 'text-red-600' : 'text-blue-600'}">ID: ${inc.id.slice(0, 8)}</span>
-                        <span class="text-slate-400">${inc.priority}</span>
+                    <div class="flex justify-between border-b border-slate-700 pb-1 mb-1">
+                        <span class="${isHigh ? 'text-red-400' : 'text-blue-400'}">รหัส: ${inc.id.slice(0, 8)}</span>
+                        <span class="text-slate-400">${isHigh ? 'ด่วนมาก' : 'ปกติ'}</span>
                     </div>
-                    <div class="text-slate-800 mt-1 uppercase font-bold">${inc.type}: ${inc.text}</div>
+                    <div class="text-slate-100 mt-1 uppercase font-bold">${inc.type}: ${inc.text}</div>
                     <div class="text-slate-500 mt-2 text-[8px]">GPS: ${inc.latitude.toFixed(4)}, ${inc.longitude.toFixed(4)}</div>
+                    <video src='https://www.w3schools.com/html/mov_bbb.mp4' autoplay loop muted style='width: 100px; margin-top: 10px; border-radius: 4px;'>
                 </div>
             `, { closeButton: false });
         }
@@ -480,18 +599,18 @@
 
             const isHigh = inc.priority === 'HIGH';
             const log = document.createElement('div');
-            log.className = `p-4 cyber-panel border-l-4 transition-all hover:bg-slate-50 cursor-pointer ${isHigh ? 'border-red-500 bg-red-50' : 'border-blue-500'}`;
+            log.className = `p-4 cyber-panel border-l-4 transition-all hover:bg-slate-800 cursor-pointer ${isHigh ? 'border-red-500 bg-red-900/20' : 'border-blue-500 bg-slate-800/50'}`;
             log.onclick = () => map.flyTo([inc.latitude, inc.longitude], 15);
 
             log.innerHTML = `
                 <div class="flex justify-between items-center mb-2">
-                    <span class="text-[9px] font-tech ${isHigh ? 'text-red-700' : 'text-blue-700'}">${inc.type}</span>
-                    <span class="text-[8px] font-mono text-slate-400">${new Date().toLocaleTimeString()}</span>
+                    <span class="text-[9px] font-tech ${isHigh ? 'text-red-400' : 'text-blue-400'}">${inc.type}</span>
+                    <span class="text-[8px] font-mono text-slate-500">${new Date().toLocaleTimeString()}</span>
                 </div>
-                <div class="text-xs text-slate-800 font-semibold leading-tight">${inc.text}</div>
-                <div class="mt-2 text-[8px] font-mono text-slate-500 flex justify-between">
-                    <span>SECTOR: BKK-CORE</span>
-                    <span>THREAT: ${isHigh ? 'CRITICAL' : 'MONITORED'}</span>
+                <div class="text-xs text-slate-100 font-semibold leading-tight">${inc.text}</div>
+                <div class="mt-2 text-[8px] font-mono text-slate-400 flex justify-between">
+                    <span>เขตพื้นที่: BKK-CORE</span>
+                    <span>สถานะ: ${isHigh ? 'วิกฤต' : 'เฝ้าระวัง'}</span>
                 </div>
             `;
             stream.prepend(log);
@@ -528,8 +647,8 @@
             // UI Feedback: Scanning...
             const banner = document.getElementById('alert-banner');
             const originalText = banner.textContent;
-            banner.textContent = "CALCULATING TACTICAL ROUTE...";
-            banner.style.background = "#ff003c";
+            banner.textContent = "กำลังคำนวณเส้นทางยุทธวิธี...";
+            banner.style.background = "#ef4444";
 
             try {
                 const start = `${HQ_COORDS[1]},${HQ_COORDS[0]}`; // lng,lat
